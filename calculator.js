@@ -1,53 +1,87 @@
-//s1
-function add(a,b){
-    return a+b;
-}
-console.log(add(2,3));
 
-function subtract(a,b){
-    return a-b;
-}
-console.log(subtract(2,3));
-function multiply(a,b){
-    return a*b;
-}
-console.log(multiply(2,3));
-function divide(a,b){
-    if (b===0){
-        return "Error:Cannot divide by zero"
-    }
-    return a/b;
-}
-console.log(divide(2,5));
-//s2
-
-let firstnumber=3;
-let operator="+";
-let secondnumber=5;
-
-let result;
+let firstnumber="";
+let operator="";
+let secondnumber="";
+let isOperatorUsed = false
+function operate(operator,firstnumber,secondnumber){
+    
 if(operator==="+"){
-    result= firstnumber + secondnumber;
+    return Number(firstnumber) + Number(secondnumber);
 }
 else if(operator==="-"){
-    result= firstnumber - secondnumber;
+   return Number(firstnumber) - Number(secondnumber);
 }
 else if(operator==="*"){
-    result= firstnumber * secondnumber;
+   return Number(firstnumber) * Number(secondnumber);
 }
 else if(operator==="/"){
-    if(secondnumber===0){
-        result="Error:cannot divide by zero";
+    if(Number(secondnumber)===0){
+        return "Error:cannot divide by zero";
     }
     else{
-        result=firstnumber/secondnumber;
-    }
-   
+    return Number(firstnumber)/Number(secondnumber);
+    }   
+}
+else{
+    return "Invalid operator"
+}
     
 }
-console.log(result);
-//s3
-function operate(operator,num1,num2){
-    return operator(num1,num2);
 
+
+let displayvalue="";
+
+const digits=document.querySelectorAll(".digitbutton");
+const operators=document.querySelectorAll(".operator");
+const equal=document.getElementById("equalto");
+const allclear=document.getElementById("clear");
+const screens=document.getElementById("screen");
+
+function showDisplay(butxt){
+    displayvalue+=butxt;
+    screens.textContent=displayvalue;
 }
+
+
+digits.forEach(digibutton =>{
+    digibutton.addEventListener("click",()=>{
+        showDisplay(digibutton.textContent);
+        if(!isOperatorUsed){
+ firstnumber = firstnumber + digibutton.textContent;
+        } else{
+            secondnumber = secondnumber +digibutton.textContent;
+        }
+        
+    });
+});
+equal.addEventListener("click", () => {
+    const result = operate(operator, firstnumber, secondnumber);
+    screens.textContent = result;
+
+    displayvalue = result.toString();
+    firstnumber = result.toString(); 
+    secondnumber = "";
+    operator = "";
+    isOperatorUsed = false;
+});
+
+operators.forEach(Operator => {
+    Operator.addEventListener("click", () => {
+        operator = Operator.textContent.trim(); 
+        isOperatorUsed = true;
+        showDisplay(operator);
+        console.log("operator:", operator);
+    });
+});
+
+allclear.addEventListener("click", () => {
+    firstnumber = "";
+    secondnumber = "";
+    operator = "";
+    isOperatorUsed = false;
+    displayvalue = "";
+    screens.textContent = "";
+});
+
+
+
